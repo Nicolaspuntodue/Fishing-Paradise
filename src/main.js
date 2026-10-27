@@ -189,7 +189,7 @@ if (!reduced) {
 }
 
 /* ---------- text splitting for the scroll moves ---------- */
-// wraps every word of el (marks and links kept) in <span class="w">
+// wraps every word of el (inline elements kept) in <span class="w">
 function splitWords(el) {
   const walk = (node) => {
     for (const n of [...node.childNodes]) {
@@ -229,18 +229,26 @@ if (!reduced) {
     });
   }
 
-  /* "Manuel, al banco": the story lights up word by word, each highlight fills as it is read */
-  const story = $('.about__text');
-  story.classList.remove('reveal');
-  const words = splitWords(story);
-  const read = gsap.timeline({ scrollTrigger: { trigger: story, start: 'top 85%', end: 'bottom 72%', scrub: 0.6 } });
-  read.fromTo(words, { opacity: 0.16 }, { opacity: 1, ease: 'none', duration: 0.3, stagger: 0.1 }, 0);
-  for (const m of $$('mark, .about__cta', story)) {
-    const at = words.indexOf($('.w', m)) * 0.1;
-    const fill = m.classList.contains('about__cta') ? '#ff5a1f' : '#dce6eb';
-    read.fromTo(m, { backgroundColor: 'rgba(220, 230, 235, 0)', color: '#ffffff' },
-      { backgroundColor: fill, color: '#0b1b26', duration: 0.35, ease: 'power1.out' }, at);
-  }
+  /* "Manuel, al banco": the statement lights up word by word as it is read,
+     the shop opens like a shutter and drifts, the four facts arrive in order */
+  const lede = $('.about__lede');
+  gsap.fromTo(splitWords(lede), { opacity: 0.18 }, {
+    opacity: 1, ease: 'none', stagger: 0.1,
+    scrollTrigger: { trigger: lede, start: 'top 85%', end: 'bottom 62%', scrub: 0.6 },
+  });
+  const pic = $('.about__pic');
+  gsap.fromTo(pic, { clipPath: 'inset(100% 0% 0% 0%)' }, {
+    clipPath: 'inset(0% 0% 0% 0%)', ease: 'none',
+    scrollTrigger: { trigger: pic, start: 'top 92%', end: 'top 45%', scrub: 0.6 },
+  });
+  gsap.fromTo($('img', pic), { scale: 1.25, yPercent: -6 }, {
+    scale: 1.05, yPercent: 6, ease: 'none',
+    scrollTrigger: { trigger: pic, start: 'top bottom', end: 'bottom top', scrub: true },
+  });
+  gsap.from([...$$('.fact'), $('.about__cta')], {
+    y: 32, autoAlpha: 0, duration: 0.9, ease: 'expo.out', stagger: 0.09,
+    scrollTrigger: { trigger: '.facts', start: 'top 82%', once: true },
+  });
 
   /* mosaic: the tiles fly in from depth and lock into one picture, which then drifts inside them */
   const tiles = $$('.tile', grid);

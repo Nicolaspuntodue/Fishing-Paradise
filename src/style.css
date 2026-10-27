@@ -119,19 +119,28 @@ h1, h2, h3, p { margin: 0; }
 .about::before { content: ''; position: absolute; inset: 100svh 0 0 0; background: var(--blue); z-index: -1; }
 /* the text carries its own ground, the same blue the dive has reached by now */
 .about__in { background: var(--blue); margin: 0 calc(-1 * var(--m)); padding: 0 var(--m); }
-.about .head { margin-bottom: clamp(40px, 5vw, 80px); max-width: 12ch; }
-.about__text {
-  columns: 2; column-gap: 32px;
-  font-size: var(--step-lead); line-height: 1.38; letter-spacing: -0.014em;
+/* opening: the title on the left, one statement on the right */
+.about__top { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 24px; align-items: end; }
+.about__top .head { grid-column: 1 / 6; }
+.about__lede {
+  grid-column: 7 / 13;
+  font-family: var(--display); font-weight: 400; font-size: clamp(1.5rem, 1.1rem + 1.3vw, 2.25rem);
+  line-height: 1.25; letter-spacing: -0.015em;
 }
-.about__text mark, .about__cta {
-  color: var(--ink); padding: 0 0.1em;
-  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+/* then the shop, and four facts read like a spec sheet */
+.about__body { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 24px; align-items: end; margin-top: clamp(56px, 7vw, 112px); }
+.about__pic { grid-column: 1 / 6; margin: 0; aspect-ratio: 4 / 5; overflow: hidden; }
+.about__pic img { width: 100%; height: 100%; object-fit: cover; }
+.about__side { grid-column: 7 / 13; display: grid; gap: clamp(36px, 4vw, 56px); }
+.facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(32px, 3.5vw, 48px) 24px; margin: 0; }
+.fact dt { font-size: var(--step-small); letter-spacing: 0.01em; color: rgba(255, 255, 255, 0.62); }
+.fact dd {
+  margin: 8px 0 0; font-family: var(--display); font-weight: 500;
+  font-size: clamp(1.75rem, 1.2rem + 1.6vw, 2.75rem); line-height: 1.05; letter-spacing: -0.025em;
 }
-.hl { background: var(--mist); }
-.hl-o { background: var(--accent); }
-.about__cta { text-decoration: none; transition: background-color 0.2s; }
-.about__cta:hover { background: #fff; }
+.fact p { margin-top: 10px; max-width: 28ch; font-size: var(--step-small); letter-spacing: 0.01em; color: rgba(255, 255, 255, 0.8); }
+.about__cta { display: grid; gap: 16px; }
+.about__cta p { font-size: var(--step-body); color: rgba(255, 255, 255, 0.85); }
 
 /* 3. mosaic */
 .mosaic { min-height: auto; padding: var(--gap) var(--m); }
@@ -333,8 +342,11 @@ a.row:hover { padding-left: 36px; }
   .wordmark { font-size: 1.0625rem; }
   .hero__sub { left: var(--m); transform: translateY(var(--shift, 0px)); text-align: left; font-size: 1.0625rem; bottom: 28px; }
 
-  .about__text { columns: 1; text-align: left; hyphens: manual; line-height: 1.3; }
-  .about__cta { display: inline-block; margin-top: 24px; padding: 12px 0.3em; }
+  .about__top, .about__body { display: block; }
+  .about__lede { margin-top: 28px; }
+  .about__pic { margin-bottom: 44px; }
+  .facts { gap: 32px 16px; }
+  .about__side { gap: 40px; }
 
   .mosaic__grid { grid-template-columns: repeat(4, 1fr); gap: 6px; }
   /* phones: the words get whole bands that grow with their text, between rows of picture */
