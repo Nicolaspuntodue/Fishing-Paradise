@@ -76,7 +76,7 @@ function buildMosaic() {
   laid = key;
   // phones get the 1024px cut, desktop the 2K upscale
   grid.style.setProperty('--img', `url('/photos/${phone() ? 'surf' : 'surf-2k'}.webp')`);
-  const want = phone() ? 28 - 10 : 24 - 7;
+  const want = phone() ? 16 : 24 - 7; // phone: four rows of four between the text bands
   const have = $$('.tile--photo', grid);
   if (have.length !== want) {
     have.forEach((t) => t.remove());
@@ -202,7 +202,7 @@ if (!reduced) {
   const story = $('.about__text');
   story.classList.remove('reveal');
   const words = splitWords(story);
-  const read = gsap.timeline({ scrollTrigger: { trigger: story, start: 'top 82%', end: 'bottom 52%', scrub: 0.6 } });
+  const read = gsap.timeline({ scrollTrigger: { trigger: story, start: 'top 85%', end: 'bottom 72%', scrub: 0.6 } });
   read.fromTo(words, { opacity: 0.16 }, { opacity: 1, ease: 'none', duration: 0.3, stagger: 0.1 }, 0);
   for (const m of $$('mark, .about__cta', story)) {
     const at = words.indexOf($('.w', m)) * 0.1;
@@ -218,7 +218,7 @@ if (!reduced) {
     rotationX: () => gsap.utils.random(-55, 55), rotationY: () => gsap.utils.random(-70, 70),
     transformPerspective: 900, ease: 'power2.out',
     stagger: { each: 0.035, from: 'random' },
-    scrollTrigger: { trigger: grid, start: 'top 95%', end: 'top 20%', scrub: 0.8 },
+    scrollTrigger: { trigger: grid, start: 'top 100%', end: 'top 45%', scrub: 0.8 },
   });
   gsap.fromTo(grid, { '--px': '18px', '--py': '12px' }, {
     '--px': '-18px', '--py': '-12px', ease: 'none',
