@@ -114,10 +114,38 @@ const read = () => ({
   len: parseFloat(range.value),
   thread: $('input[name=thread]:checked', form).value,
 });
+const metres = (v) => `${(+v).toFixed(1).replace('.', ',')} m`;
+const cap = (t) => t[0].toUpperCase() + t.slice(1);
+
+// the segmented control's thumb glides under the chosen technique
+const seg = $('.seg', form);
+const thumb = $('.seg__thumb', seg);
+function moveThumb() {
+  const lab = $('input:checked', seg).closest('label');
+  thumb.style.setProperty('--tx', `${lab.offsetLeft}px`);
+  thumb.style.setProperty('--tw', `${lab.offsetWidth}px`);
+}
+seg.classList.add('is-still'); // first placement without travel
+moveThumb();
+requestAnimationFrame(() => requestAnimationFrame(() => seg.classList.remove('is-still')));
+
+// a summary value that changes gets a small lift, so the eye catches it
+function show(key, value) {
+  const dd = $(`[data-s="${key}"]`, form);
+  if (dd.textContent === value) return;
+  dd.textContent = value;
+  if (!reduced) gsap.fromTo(dd, { y: 6, opacity: 0.35 }, { y: 0, opacity: 1, duration: 0.35, ease: 'power3.out', overwrite: true });
+}
+
 function updateRod() {
   const { tech, len, thread } = read();
-  $('[data-len-out]', form).textContent = `${len.toFixed(1).replace('.', ',')} m`;
-  $('[data-sum]', form).textContent = `${guideCount(tech, len)} anelli, legature ${thread}`;
+  range.parentElement.style.setProperty('--p', (len - range.min) / (range.max - range.min));
+  $('[data-len-out]', form).textContent = metres(len);
+  $('[data-thread-name]', form).textContent = thread;
+  show('tech', $('input:checked', seg).nextElementSibling.textContent);
+  show('len', metres(len));
+  show('rings', String(guideCount(tech, len)));
+  show('thread', cap(thread));
   $('[data-wa]', form).href = whatsappLink(tech, len, thread);
   rod?.set(guidePositions(tech, len), THREADS[thread]);
 }
@@ -125,6 +153,9 @@ $$('input[name=tech]', form).forEach((r) => r.addEventListener('change', () => {
   const t = TECH[r.value];
   Object.assign(range, { min: t.min, max: t.max });
   range.value = t.def;
+  $('[data-min]', form).textContent = metres(t.min);
+  $('[data-max]', form).textContent = metres(t.max);
+  moveThumb();
   updateRod();
 }));
 form.addEventListener('input', updateRod);
@@ -249,4 +280,5 @@ if (!reduced) {
   });
 }
 
-document.fonts.ready.then(() => { buildMosaic(); ScrollTrigger.refresh(); });
+onResize(moveThumb);
+document.fonts.ready.then(() => { buildMosaic(); moveThumb(); ScrollTrigger.refresh(); });

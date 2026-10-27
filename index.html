@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#f2f5f6">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/src/style.css">
 </head>
 <body>
@@ -81,24 +81,40 @@
   <div class="canna__form">
     <h2 class="head reveal" id="canna-t">La tua canna</h2>
     <p class="reveal">Manuel la monta a mano, anello per anello. Scegli tecnica, lunghezza e colore delle legature: la richiesta gli arriva su WhatsApp e ti risponde con prezzo e tempi.</p>
-    <fieldset class="reveal">
-      <legend>Tecnica</legend>
-      <div class="chips" data-tech>
+    <fieldset class="field reveal">
+      <legend class="field__label">Tecnica</legend>
+      <div class="seg" data-tech>
+        <span class="seg__thumb" aria-hidden="true"></span>
         <label><input type="radio" name="tech" value="surf"><span>Surf casting</span></label>
         <label><input type="radio" name="tech" value="bolo" checked><span>Bolognese</span></label>
         <label><input type="radio" name="tech" value="trota"><span>Trota lago</span></label>
-        <label><input type="radio" name="tech" value="spin"><span>Spinning da kayak</span></label>
+        <label><input type="radio" name="tech" value="spin"><span>Spinning kayak</span></label>
       </div>
     </fieldset>
-    <label class="len reveal">Lunghezza <output data-len-out>7,0 m</output>
-      <input type="range" data-len min="5" max="8" step="0.1" value="7">
-    </label>
-    <fieldset class="reveal">
-      <legend>Legature</legend>
+    <div class="field reveal">
+      <div class="field__row">
+        <label class="field__label" for="len">Lunghezza</label>
+        <output class="field__value" for="len" data-len-out>7,0 m</output>
+      </div>
+      <div class="slider">
+        <span class="slider__track" aria-hidden="true"><span class="slider__fill" data-fill></span></span>
+        <input id="len" type="range" data-len min="5" max="8" step="0.1" value="7">
+      </div>
+      <div class="slider__ends" aria-hidden="true"><span data-min>5 m</span><span data-max>8 m</span></div>
+    </div>
+    <fieldset class="field reveal">
+      <legend class="field__row field__label">Legature <span class="field__note" data-thread-name>nere</span></legend>
       <div class="swatches" data-thread></div>
     </fieldset>
-    <p class="canna__sum reveal" data-sum aria-live="polite">9 anelli, legature nere</p>
-    <a class="btn btn--ink reveal" data-wa href="https://wa.me/393894620058" target="_blank" rel="noopener">Manda la richiesta a Manuel</a>
+    <div class="build reveal">
+      <dl aria-live="polite">
+        <div><dt>Tecnica</dt><dd data-s="tech">Bolognese</dd></div>
+        <div><dt>Lunghezza</dt><dd data-s="len">7,0 m</dd></div>
+        <div><dt>Anelli</dt><dd data-s="rings">9</dd></div>
+        <div><dt>Legature</dt><dd data-s="thread">Nere</dd></div>
+      </dl>
+      <a class="btn btn--ink btn--wide" data-wa href="https://wa.me/393894620058" target="_blank" rel="noopener">Manda la richiesta a Manuel <span aria-hidden="true">→</span></a>
+    </div>
   </div>
   <div class="canna__stage">
     <canvas class="canna__gl" role="img" aria-label="Modello 3D della canna con gli anelli e le legature scelte"></canvas>
